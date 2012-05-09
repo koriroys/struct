@@ -4,4 +4,4 @@ RSpec::Core::RakeTask.new :rspec do |t|
   t.rspec_opts = ['--fail-fast', '--format', 'documentation']
 end
 
-task :default => :rspec
+task default: :rspec

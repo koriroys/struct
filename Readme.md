@@ -1,6 +1,14 @@
 <sub>This is a response for one of our apprentices who wanted to learn more about how structs work.</sub>
 
-Doing a quick ack of directories that have made it onto this new computer, there are a couple of ways I use it.
+TL;DR
+-----
+
+Part of this is a response and part of it a challenge. If you are only interested in the challenge clone the repo and run rake (more detailed instructions [here](https://gist.github.com/2641441#challenge)).
+
+Introduction
+------------
+
+I use `Struct` in a couple of ways. Doing a quick grep of directories that have made it onto this new computer, there are a couple of ways I use it.
 
 As a superclass
 ---------------
@@ -12,7 +20,7 @@ Examples: [1](https://github.com/JoshCheek/surrogate/blob/d8c41f06743fa79adde0af
 These are from my gem Surrogate, which helps with hand-rolled mocking. Since Struct.new returns a class, I can inherit from it.
 Whatever names I pass to Struct.new will become methods that my instances can access. It also defines an initializer for me if I want to use it.
 Note that it is important to use the setters and getters when doing this, rather than instance variables.
-This is a point I explicitly (and, admittedly, rantilly) make one of my other gems, Deject [third paragraph](https://github.com/JoshCheek/deject/blob/d781cf016cf0d0ebb17a0997d8899f6ff4d1581e/Readme.md#about-the-code).
+This is a point I explicitly (and, admittedly, rantilly) make one of my other gems, Deject [fourth paragraph](https://github.com/JoshCheek/deject/blob/d781cf016cf0d0ebb17a0997d8899f6ff4d1581e/Readme.md#about-the-code).
 Also notice that I've done this several times in Deject's readme examples.
 
 I usually use this approach to quickly scaffold out a simple class. Usually so simple that it's more of a data structure than an object.
@@ -29,18 +37,18 @@ Similar to the above, but here the struct becomes the class itself (no need to i
 Examples: [1](https://github.com/JoshCheek/Play/blob/master/craigslist-watcher/craigslist_watcher.rb#L16),
           [2](https://github.com/JoshCheek/Play/blob/master/project_euler/lib/project_euler/problems/014.rb#L4)
 
-In these two, it is just a quick way to get a class with methods I can inherit. Notice I set them into constants so that they feel very similar to "normal" classes.
+In these two, it is just a quick way to get a class with methods I can access. Notice I set them into constants so that they feel very similar to "normal" classes.
 
 
 As a class with behaviour
 -------------------------
 
-A bit less common (as soon as these become decently complex, I move them into real objects, they usually serve just to prototype out the idea).
-But you can pass a block to Struct.new, and define any methods you want inside of there.
+A bit less common (as soon as these become decently complex, I move them into "real" classes, they usually serve just to prototype out the idea).
+But you can pass a block to `Struct.new`, and define any methods you want inside of there.
 The block gets class evaled, so methods you define in there will be available on instances of the struct.
 For simple object/data structures, this can be convenient, but these usually do still wind up turning into real classes pretty quickly.
 
-Example: [2](https://github.com/JoshCheek/Play/blob/master/ruby-golf/helper.rb#L2-7)
+Example: [1](https://github.com/JoshCheek/Play/blob/master/ruby-golf/helper.rb#L2-7)
 
 
 Challenge
@@ -67,47 +75,56 @@ I went through it myself to see what kinds of things I needed to do, so here are
 Tools
 -----
 
-`.new` is just a method, you can define it yourself if you want it to behave differently.
+`SomeClass.new` is just a method, you can define it yourself if you want it to behave differently.
 
 Classes are instances of [Class](http://rdoc.info/stdlib/core/1.9.3/Class), you can get one by typing `Class.new`. In general `class MyClass; end` is the same as `MyClass = Class.new(Object)`
 
 When you instantiate `Class`, you can pass a block that will be [`class_eval`ed](http://rdoc.info/stdlib/core/1.9.3/Module#class_eval-instance_method).
 The examples all show strings being passed in, but don't do that, use the block form like this:
 
-    klass = Class.new { def hello() "world" end }
-    klass.new.hello # => "world"
+```ruby
+klass = Class.new { def hello() "world" end }
+klass.new.hello # => "world"
+```
 
 Within a class context, you can say `define_method(:name) { 'Josh' }` and it will define for you an instance method called `name`,
 which will return the string `'Josh'` when invoked.
 
 Because these take blocks, they have access to variables defined in their enclosing environment:
 
-    target = "world"
+```ruby
+target = "world" # note that this var must be defined before the block
 
-    greet_class = Class.new do
-      define_method :hello do
-        target
-      end
-    end
+greet_class = Class.new do
+  define_method :hello do
+    target
+  end
+end
 
-    greeter = greet_class.new
-    greeter.hello # => "world"
+greeter = greet_class.new
+greeter.hello # => "world"
 
-    target = "universe"
-    greeter.hello # => "universe"
+target = "universe"
+greeter.hello # => "universe"
+```
 
-The method `Hash.[]` will turn arrays of associated objects into key/value pairs in a hash. Example: `Hash[ [[:name1, :value1], [:name2, :value2]] ] # => {:name1=>:value1, :name2=>:value2}`
+The method `Hash.[]` will turn arrays of associated objects into key/value pairs in a hash.
+
+```ruby
+key_value_pairs = [[:name1, :value1], [:name2, :value2]]
+Hash[key_value_pairs] # => {:name1=>:value1, :name2=>:value2}
+```
 
 
 In Closing
 ----------
 
 I hope you have fun with this challenge, if you finish it, I'll send you my solution.
-Feel free to ask me any questions you have, if you get stuck. If you're pairing with Michael,
+Feel free to ask me any questions you have if you get stuck. Or, if you're pairing with Michael,
 you can ask him as well.
 
-"Metaprogramming" (which is really just programming, and the conventional way of thinking about programming in Ruby,
-with `class` and `def` and so forth is the real metaprogramming -- that shit is crazy when you think about
+"Metaprogramming" (which is really just programming -- and the conventional way of thinking about programming in Ruby,
+with `class` and `def` and so forth is the real metaprogramming, that shit is crazy when you think about
 what it's actually doing) is a lot of fun, but don't let it get away from you :)
 It can often be difficult for people to reason about, so have mercy on your team and use it with discretion.
 In general, I rarely use it outside of gems, and only for very straightforward uses within my apps.
