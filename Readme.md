@@ -17,8 +17,8 @@ Examples: [1](https://github.com/JoshCheek/surrogate/blob/d8c41f06743fa79adde0af
           [2](https://github.com/JoshCheek/surrogate/blob/d8c41f06743fa79adde0af7fc599813948cc87a6/lib/surrogate/api_comparer.rb#L53),
           [3](https://github.com/JoshCheek/surrogate/blob/d8c41f06743fa79adde0af7fc599813948cc87a6/lib/surrogate/api_comparer.rb#L84)
 
-These are from my gem Surrogate, which helps with hand-rolled mocking. Since Struct.new returns a class, I can inherit from it.
-Whatever names I pass to Struct.new will become methods that my instances can access. It also defines an initializer for me if I want to use it.
+These are from my gem Surrogate, which helps with hand-rolled mocking. Since `Struct.new` returns a class, I can inherit from it.
+Whatever names I pass to `Struct.new` will become methods that my instances can access. It also defines an initializer for me if I want to use it.
 Note that it is important to use the setters and getters when doing this, rather than instance variables.
 This is a point I explicitly (and, admittedly, rantilly) make one of my other gems, Deject [fourth paragraph](https://github.com/JoshCheek/deject/blob/d781cf016cf0d0ebb17a0997d8899f6ff4d1581e/Readme.md#about-the-code).
 Also notice that I've done this several times in Deject's readme examples.
@@ -68,12 +68,12 @@ Then edit `lib/my_struct.rb` and run rake until there are no more failures. I've
 so you can hopefully get a nice tdd style flow going.
 
 Unfortunately most of the difficult things are right at the beginning, then it's smooth sailing after that. So don't give up, if you can get past the first several,
-you'll be in a good place to tackle the rest of them. If you decide to do t, you'll have to learn some "metaprogramming".
+you'll be in a good place to tackle the rest of them. If you decide to do it, you'll have to learn some "metaprogramming".
 I went through it myself to see what kinds of things I needed to do, so here are some pointers and tools to help you along the way.
 
 
-Tools
------
+Poointers and tools
+-------------------
 
 `SomeClass.new` is just a method, you can define it yourself if you want it to behave differently.
 
