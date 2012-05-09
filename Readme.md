@@ -115,6 +115,15 @@ key_value_pairs = [[:name1, :value1], [:name2, :value2]]
 Hash[key_value_pairs] # => {:name1=>:value1, :name2=>:value2}
 ```
 
+You can get the block out of a method list with the ampersand `def meth(arg, &block)`
+
+You can put an arg into the block slot of a method with the ampersand
+
+```ruby
+largest_first = lambda { |a, b| b <=> a }
+[2,3,7,3,5,1,6,0].sort &largest_first # => [7, 6, 5, 3, 3, 2, 1, 0]
+```
+
 
 In Closing
 ----------

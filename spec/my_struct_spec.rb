@@ -19,6 +19,17 @@ describe MyStruct, '.new' do
     instance.should respond_to :bar
   end
 
+  it 'takes a block which is class_evaled' do
+    klass = described_class.new(:abc) do
+      @some_ivar = :whatever
+      def instance_meth() 'instance value' end
+      def self.class_meth() 'class value' end
+    end
+    klass.instance_variable_get(:@some_ivar).should == :whatever
+    klass.new.instance_meth.should == 'instance value'
+    klass.class_meth.should == 'class value'
+  end
+
   describe 'the returned class' do
     describe 'methods defined by the struct' do
       specify 'they define a getter which returns the value they are initialized with' do
