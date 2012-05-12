@@ -1,8 +1,9 @@
 require 'my_struct'
 
 describe MyStruct, '.new' do
-  it 'returns a class' do
+  it 'returns an anonymous class' do
     described_class.new(:abc).should be_a_kind_of Class
+    described_class.new(:abc).name.should be_nil
   end
 
   it 'raises an ArgumentError if not given at least one argument' do
