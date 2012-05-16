@@ -103,8 +103,10 @@ describe MyStruct, '.new' do
 
     describe '#inspect' do
       it 'identifies its type, keys, and inspected values' do
-        instance = described_class.new(:foo, :bar).new :abc
-        instance.inspect.should == "#<struct foo=:abc, bar=nil>"
+        obj = Object.new
+        def obj.inspect() 'inspected :)' end
+        instance = described_class.new(:foo, :bar, :baz).new :abc, obj
+        instance.inspect.should == "#<struct foo=:abc, bar=inspected :), baz=nil>"
       end
     end
 
