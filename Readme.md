@@ -72,7 +72,7 @@ you'll be in a good place to tackle the rest of them. If you decide to do it, yo
 I went through it myself to see what kinds of things I needed to do, so here are some pointers and tools to help you along the way.
 
 
-Poointers and tools
+Pointers and tools
 -------------------
 
 `SomeClass.new` is just a method, you can define it yourself if you want it to behave differently.
