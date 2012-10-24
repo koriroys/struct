@@ -7,9 +7,7 @@ class MyStruct
     raise ArgumentError, "wrong number of arguments (0 for 1+)" if args.empty?
 
     args.each do |arg|
-      if arg.class != Symbol
-        raise TypeError
-      end
+      raise TypeError if arg.class != Symbol
     end
 
     Class.new
