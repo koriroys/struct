@@ -12,7 +12,7 @@ class MyStruct
           raise TypeError
         end
       end
-      return Class.new
     end
+    Class.new
   end
 end
