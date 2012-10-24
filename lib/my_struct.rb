@@ -4,9 +4,7 @@
 
 class MyStruct
   def self.new(*args)
-    if args.empty?
-      raise ArgumentError, "wrong number of arguments (0 for 1+)"
-    end
+    raise ArgumentError, "wrong number of arguments (0 for 1+)" if args.empty?
 
     args.each do |arg|
       if arg.class != Symbol
